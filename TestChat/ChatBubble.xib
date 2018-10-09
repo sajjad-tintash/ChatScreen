@@ -30,11 +30,20 @@
                                     <constraint firstAttribute="width" constant="32" id="she-Vc-h5C"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="salman" translatesAutoresizingMaskIntoConstraints="NO" id="FYF-OG-ZEA">
+                                <rect key="frame" x="0.0" y="3" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FYF-OG-ZEA" secondAttribute="height" multiplier="1:1" id="0F0-7C-0EZ"/>
+                                    <constraint firstAttribute="width" constant="32" id="FyE-qx-iPP"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="FYF-OG-ZEA" secondAttribute="bottom" id="UTR-VE-QXi"/>
                             <constraint firstAttribute="bottom" secondItem="mdk-0K-buH" secondAttribute="bottom" id="ld3-Xy-wad"/>
                             <constraint firstAttribute="trailing" secondItem="mdk-0K-buH" secondAttribute="trailing" id="nfa-5q-Qau"/>
+                            <constraint firstItem="FYF-OG-ZEA" firstAttribute="leading" secondItem="OPJ-1p-FlI" secondAttribute="leading" id="z0q-H6-kme"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -48,11 +57,13 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="mainView" destination="OPJ-1p-FlI" id="hDp-MQ-DXa"/>
+                <outlet property="recieverImage" destination="FYF-OG-ZEA" id="nLb-IN-HO4"/>
                 <outlet property="senderImage" destination="mdk-0K-buH" id="bdm-YT-vMe"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="salman" width="639" height="640"/>
         <image name="sjf" width="400" height="400"/>
     </resources>
 </document>

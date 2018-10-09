@@ -7,9 +7,9 @@
 //
 
 import UIKit
-
+let BUBBLE_SCREEN_RATIO : CGFloat = 0.6
 let MIN_BUBBLE_HEIGHT   : CGFloat = 32
-let MAX_BUBBLE_WIDTH    : CGFloat = UIScreen.main.bounds.width * 0.6
+let MAX_BUBBLE_WIDTH    : CGFloat = UIScreen.main.bounds.width * BUBBLE_SCREEN_RATIO
 let SCREEN_WIDTH        : CGFloat = UIScreen.main.bounds.width
 let BUBBLE_X_PADDING    : CGFloat = 28
 let BUBBLE_Y_PADDING    : CGFloat = 8
@@ -27,12 +27,16 @@ enum MediaType {
 class ChatBubble: UITableViewCell {
 
     @IBOutlet weak var mainView: UIView!
-    
     @IBOutlet weak var senderImage: UIImageView!
+    @IBOutlet weak var recieverImage: UIImageView!
     
-    var outgoingMessageLayer: CAShapeLayer? = nil
+    var messageLayer: CAShapeLayer? = nil
+
     var dataText: String? = nil
     var label: UILabel? = nil
+    var imageContent: UIImage? = nil
+    var chatType = ChatType.sender
+    var mediaType = MediaType.text
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,9 +53,11 @@ class ChatBubble: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        if outgoingMessageLayer != nil {
-            outgoingMessageLayer?.removeFromSuperlayer()
-            outgoingMessageLayer = nil
+        senderImage.isHidden = false
+        recieverImage.isHidden = false
+        if messageLayer != nil {
+            messageLayer?.removeFromSuperlayer()
+            messageLayer = nil
         }
         if dataText != nil {
             dataText = nil
@@ -62,41 +68,154 @@ class ChatBubble: UITableViewCell {
         }
     }
     
-    func setup(_ text: String) {
+    func setup(_ text: String, isOutgoingMessage: Bool) {
         dataText = text
-        senderImage.layer.cornerRadius = senderImage.frame.width/2
-        senderImage.clipsToBounds = true
+        mediaType = .text
+        if isOutgoingMessage {
+            chatType = .sender
+            recieverImage.isHidden = true
+            senderImage.layer.cornerRadius = senderImage.frame.width/2
+            senderImage.clipsToBounds = true
+        } else {
+            chatType = .recepient
+            senderImage.isHidden = true
+            recieverImage.layer.cornerRadius = senderImage.frame.width/2
+            recieverImage.clipsToBounds = true
+        }
         showBubble()
     }
 
-    
+    func setup(_ image: UIImage, isOutgoingMessage: Bool) {
+        imageContent = image
+        senderImage.layer.cornerRadius = senderImage.frame.width/2
+        senderImage.clipsToBounds = true
+        mediaType = .image
+        if isOutgoingMessage {
+            chatType = .sender
+            recieverImage.isHidden = true
+            senderImage.layer.cornerRadius = senderImage.frame.width/2
+            senderImage.clipsToBounds = true
+        } else {
+            chatType = .recepient
+            senderImage.isHidden = true
+            recieverImage.layer.cornerRadius = senderImage.frame.width/2
+            recieverImage.clipsToBounds = true
+        }
+        showBubble()
+    }
     
     func showBubble() {
-        guard let text = dataText else { return }
-        
-        
-        var height = text.height(withConstrainedWidth: MAX_BUBBLE_WIDTH, font: FONT)
-        var width = MAX_BUBBLE_WIDTH
-        
-        if height < MIN_BUBBLE_HEIGHT {
-            height = MIN_BUBBLE_HEIGHT
-            width = text.width(withConstrainedHeight: height, font: FONT)
+        var height: CGFloat
+        var width: CGFloat
+        var bezierPath: UIBezierPath
+        switch mediaType {
+        case .image:
+            var imageView: UIImageView
+            guard let image = imageContent else { return }
+            width = SCREEN_WIDTH / 2
+            height = width / 0.75
+            switch chatType {
+            case .sender:
+                bezierPath = senderBazierPath(width: width, height: height)
+                let messageLayer = CAShapeLayer()
+                messageLayer.path = bezierPath.cgPath
+                messageLayer.frame = CGRect(x: 0,y:0,
+                                            width: width,
+                                            height: height)
+                imageView = UIImageView(image: image)
+                imageView.frame = CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+                imageView.layer.mask = messageLayer
+                mainView.addSubview(imageView)
+             
+                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+            case .recepient:
+                bezierPath = recieverBazierPath(width: width, height: height)
+                let messageLayer = CAShapeLayer()
+                messageLayer.path = bezierPath.cgPath
+                messageLayer.frame = CGRect(x: 0,y:0,
+                                            width: width,
+                                            height: height)
+                imageView = UIImageView(image: image)
+                imageView.frame = CGRect(x: BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+                imageView.layer.mask = messageLayer
+                mainView.addSubview(imageView)
+                
+                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+            }
+            
+        case .text:
+            guard let text = dataText else { return }
+            height = text.height(withConstrainedWidth: MAX_BUBBLE_WIDTH, font: FONT)
+            width = MAX_BUBBLE_WIDTH
+            
+            if height < MIN_BUBBLE_HEIGHT {
+                height = MIN_BUBBLE_HEIGHT
+                width = text.width(withConstrainedHeight: height, font: FONT)
+            }
+            label =  UILabel()
+            label?.numberOfLines = 0
+            label?.font = FONT
+            switch chatType {
+            case .sender:
+                label?.textColor = .white
+                label?.textAlignment = .right
+                label?.text = text
+                label?.frame = CGRect(x: SCREEN_WIDTH - (width + BUBBLE_X_PADDING/2) - BUBBLE_SENDER_SPACE,y:2,
+                                      width: width,
+                                      height: height)
+                height += BUBBLE_Y_PADDING
+                width  += BUBBLE_X_PADDING
+                
+                bezierPath = senderBazierPath(width: width, height: height)
+                messageLayer = CAShapeLayer()
+                messageLayer?.path = bezierPath.cgPath
+                messageLayer?.frame = CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE,y:0,
+                                                     width: width,
+                                                     height: height)
+                messageLayer?.fillColor = UIColor.green.cgColor
+                if let messageLayer = messageLayer {
+                    mainView.layer.addSublayer(messageLayer)
+                }
+                if let textlabel = label {
+                    mainView.addSubview(textlabel)
+                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                }
+            case .recepient:
+                label?.textColor = .black
+                label?.textAlignment = .left
+                label?.text = text
+                label?.frame = CGRect(x: BUBBLE_SENDER_SPACE + BUBBLE_X_PADDING / 2,y:2,
+                                      width: width,
+                                      height: height)
+                height += BUBBLE_Y_PADDING
+                width  += BUBBLE_X_PADDING
+                bezierPath = recieverBazierPath(width: width, height: height)
+                messageLayer = CAShapeLayer()
+                messageLayer?.path = bezierPath.cgPath
+                messageLayer?.frame = CGRect(x: BUBBLE_SENDER_SPACE, y:0,
+                                                    width: width,
+                                                    height: height)
+                messageLayer?.fillColor = UIColor.lightGray.cgColor
+                if let messageLayer = messageLayer {
+                    mainView.layer.addSublayer(messageLayer)
+                }
+                if let textlabel = label {
+                    mainView.addSubview(textlabel)
+                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                }
+            }
         }
-        
-        label =  UILabel()
-        label?.numberOfLines = 0
-        label?.font = FONT
-        label?.textColor = .white
-        label?.textAlignment = .right
-        label?.text = text
-        
-        label?.frame = CGRect(x: SCREEN_WIDTH - (width + BUBBLE_X_PADDING/2) - BUBBLE_SENDER_SPACE,y:2,
-                             width: width,
-                             height: height)
-        
-        height += BUBBLE_Y_PADDING
-        width  += BUBBLE_X_PADDING
-        
+    }
+    
+    func senderBazierPath(width: CGFloat, height: CGFloat) -> UIBezierPath {
         let bezierPath = UIBezierPath()
         bezierPath.move(to: CGPoint(x: width - 22, y: height))
         bezierPath.addLine(to: CGPoint(x: 17, y: height))
@@ -111,22 +230,24 @@ class ChatBubble: UITableViewCell {
         bezierPath.addCurve(to: CGPoint(x: width - 11.04, y: height - 4.04), controlPoint1: CGPoint(x: width - 4.07, y: height + 0.43), controlPoint2: CGPoint(x: width - 8.16, y: height - 1.06))
         bezierPath.addCurve(to: CGPoint(x: width - 22, y: height), controlPoint1: CGPoint(x: width - 16, y: height), controlPoint2: CGPoint(x: width - 19, y: height))
         bezierPath.close()
-        
-        outgoingMessageLayer = CAShapeLayer()
-        outgoingMessageLayer?.path = bezierPath.cgPath
-        outgoingMessageLayer?.frame = CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE,y:0,
-                                                         width: width,
-                                                         height: height)
-        outgoingMessageLayer?.fillColor = UIColor.random().cgColor
-        
-        if let bubbleLayer = outgoingMessageLayer {
-            mainView.layer.addSublayer(bubbleLayer)
-        }
-        if let textlabel = label {
-            mainView.addSubview(textlabel)
-            mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-            mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
-        }
-
+        return bezierPath
+    }
+    
+    func recieverBazierPath(width: CGFloat, height: CGFloat) -> UIBezierPath {
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: CGPoint(x: 22, y: height))
+        bezierPath.addLine(to: CGPoint(x: width - 17, y: height))
+        bezierPath.addCurve(to: CGPoint(x: width, y: height - 17), controlPoint1: CGPoint(x: width - 7.61, y: height), controlPoint2: CGPoint(x: width, y: height - 7.61))
+        bezierPath.addLine(to: CGPoint(x: width, y: 17))
+        bezierPath.addCurve(to: CGPoint(x: width - 17, y: 0), controlPoint1: CGPoint(x: width, y: 7.61), controlPoint2: CGPoint(x: width - 7.61, y: 0))
+        bezierPath.addLine(to: CGPoint(x: 21, y: 0))
+        bezierPath.addCurve(to: CGPoint(x: 4, y: 17), controlPoint1: CGPoint(x: 11.61, y: 0), controlPoint2: CGPoint(x: 4, y: 7.61))
+        bezierPath.addLine(to: CGPoint(x: 4, y: height - 11))
+        bezierPath.addCurve(to: CGPoint(x: 0, y: height), controlPoint1: CGPoint(x: 4, y: height - 1), controlPoint2: CGPoint(x: 0, y: height))
+        bezierPath.addLine(to: CGPoint(x: -0.05, y: height - 0.01))
+        bezierPath.addCurve(to: CGPoint(x: 11.04, y: height - 4.04), controlPoint1: CGPoint(x: 4.07, y: height + 0.43), controlPoint2: CGPoint(x: 8.16, y: height - 1.06))
+        bezierPath.addCurve(to: CGPoint(x: 22, y: height), controlPoint1: CGPoint(x: 16, y: height), controlPoint2: CGPoint(x: 19, y: height))
+        bezierPath.close()
+        return bezierPath
     }
 }

@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    let dataSource : [String] = ["App Design","App layout - Backend - Responsive design","The purpose of this product specification is to product an app that host text style chat stories similar to Hooked by Telepathic, Yarn by Science Mobile & Tap by Wattpad.","The ranking of series depends on which section we are looking at. For example, the carousel section will mostly likely be a curated list and the order of series is the same for all users. We will change the content and the order of the list manually from time to time. Later we will develop logic on how the series should be ranked, could be a combination of user data, popularity, publishing date and manual curation","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."]
+    let dataSource : [String] = ["App Design","App layout - Backend - Responsive design","The purpose of this product specification is to product an app that host text style chat stories similar to Hooked by Telepathic, Yarn by Science Mobile & Tap by Wattpad.","The ranking of series depends on which section we are looking at. For example, the carousel section will mostly likely be a curated list and the order of series is the same for all users. We will change the content and the order of the list manually from time to time. Later we will develop logic on how the series should be ranked, could be a combination of user data, popularity, publishing date and manual curation","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."]
     
     
     func setup(){
@@ -48,7 +48,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,7 +57,17 @@ extension ViewController: UITableViewDataSource {
             cell.backgroundColor = .black
             return cell
         }
-        cell.setup(dataSource[indexPath.row])
+        if indexPath.row % 2 == 0 {
+            cell.setup(dataSource[indexPath.row], isOutgoingMessage: true)
+        } else if indexPath.row == 1 {
+            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: true)
+        }
+        else if indexPath.row == 3 {
+            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: false)
+        }
+        else {
+            cell.setup(dataSource[indexPath.row], isOutgoingMessage: false)
+        }
         return cell
     }
 }
