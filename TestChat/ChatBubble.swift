@@ -16,7 +16,13 @@ let BUBBLE_Y_PADDING    : CGFloat = 8
 let BUBBLE_SENDER_SPACE : CGFloat = 40
 let FONT                : UIFont  = UIFont.systemFont(ofSize: 18)
 
+enum ChatType {
+    case sender, recepient
+}
 
+enum MediaType {
+    case text, image
+}
 
 class ChatBubble: UITableViewCell {
 
