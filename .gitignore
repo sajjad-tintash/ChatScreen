@@ -1,3 +1,4 @@
 .DS_Store
 TestChat.xcodeproj/project.xcworkspace/xcuserdata/tin.xcuserdatad
 TestChat.xcodeproj/xcuserdata/tin.xcuserdatad
+*.xcuserstate

@@ -16,6 +16,9 @@
 		B40CBD7F216C87BB00DEB591 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40CBD7D216C87BB00DEB591 /* LaunchScreen.storyboard */; };
 		B40CBD88216C8A7D00DEB591 /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40CBD86216C8A7D00DEB591 /* ChatBubble.swift */; };
 		B40CBD89216C8A7D00DEB591 /* ChatBubble.xib in Resources */ = {isa = PBXBuildFile; fileRef = B40CBD87216C8A7D00DEB591 /* ChatBubble.xib */; };
+		B489DDD2216E102C003DBCE2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B489DDD1216E102C003DBCE2 /* Constants.swift */; };
+		B489DDD4216E1107003DBCE2 /* BezierBubbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B489DDD3216E1107003DBCE2 /* BezierBubbleService.swift */; };
+		B489DDD6216E122D003DBCE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B489DDD5216E122D003DBCE2 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		B40CBD80216C87BC00DEB591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B40CBD86216C8A7D00DEB591 /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		B40CBD87216C8A7D00DEB591 /* ChatBubble.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatBubble.xib; sourceTree = "<group>"; };
+		B489DDD1216E102C003DBCE2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B489DDD3216E1107003DBCE2 /* BezierBubbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierBubbleService.swift; sourceTree = "<group>"; };
+		B489DDD5216E122D003DBCE2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 				B40CBD87216C8A7D00DEB591 /* ChatBubble.xib */,
 				260A95F7216E065D000B8CDF /* MemoBubble.swift */,
 				260A95F8216E065D000B8CDF /* MemoBubble.xib */,
+				B489DDD1216E102C003DBCE2 /* Constants.swift */,
+				B489DDD3216E1107003DBCE2 /* BezierBubbleService.swift */,
+				B489DDD5216E122D003DBCE2 /* Extensions.swift */,
 			);
 			path = TestChat;
 			sourceTree = "<group>";
@@ -151,8 +160,11 @@
 			files = (
 				B40CBD77216C87BA00DEB591 /* ViewController.swift in Sources */,
 				260A95F9216E065D000B8CDF /* MemoBubble.swift in Sources */,
+				B489DDD6216E122D003DBCE2 /* Extensions.swift in Sources */,
+				B489DDD4216E1107003DBCE2 /* BezierBubbleService.swift in Sources */,
 				B40CBD88216C8A7D00DEB591 /* ChatBubble.swift in Sources */,
 				B40CBD75216C87BA00DEB591 /* AppDelegate.swift in Sources */,
+				B489DDD2216E102C003DBCE2 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
