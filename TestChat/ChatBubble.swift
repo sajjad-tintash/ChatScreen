@@ -26,18 +26,19 @@ enum MediaType {
 
 class ChatBubble: UITableViewCell {
 
-    @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var senderImage: UIImageView!
-    @IBOutlet weak var recieverImage: UIImageView!
+    @IBOutlet weak var mainView         : UIView!
+    @IBOutlet weak var senderImage      : UIImageView!
+    @IBOutlet weak var recieverImage    : UIImageView!
     
-    var messageLayer: CAShapeLayer? = nil
-    var chatImageView:  UIImageView?    = nil
+    var messageLayer    : CAShapeLayer?     = nil
+    var chatImageView   : UIImageView?      = nil
 
-    var dataText: String? = nil
-    var label: UILabel? = nil
-    var imageContent: UIImage? = nil
-    var chatType = ChatType.sender
-    var mediaType = MediaType.text
+    var dataText        : String? = nil
+    var label           : UILabel? = nil
+    var imageContent    : UIImage? = nil
+    
+    var chatType    = ChatType.sender
+    var mediaType   = MediaType.text
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -84,7 +85,7 @@ class ChatBubble: UITableViewCell {
             mediaType   = .text
         } else if let image = data as? UIImage {
             imageContent = image
-            mediaType   = .image
+            mediaType    = .image
         }
         showBubble()
     }
