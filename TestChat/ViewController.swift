@@ -57,17 +57,13 @@ extension ViewController: UITableViewDataSource {
             cell.backgroundColor = .black
             return cell
         }
+        
         if indexPath.row % 2 == 0 {
-            cell.setup(dataSource[indexPath.row], isOutgoingMessage: true)
-        } else if indexPath.row == 1 {
-            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: true)
+            cell.setup(dataSource[indexPath.row], messageOrigin: indexPath.row % 4 == 0 ? .sender : .recepient)
+        } else {
+            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), messageOrigin: indexPath.row % 3 == 0 ? .recepient : .sender)
         }
-        else if indexPath.row == 3 {
-            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: false)
-        }
-        else {
-            cell.setup(dataSource[indexPath.row], isOutgoingMessage: false)
-        }
+        
         return cell
     }
 }
