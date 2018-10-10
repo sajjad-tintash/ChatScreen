@@ -8,22 +8,24 @@
 
 import UIKit
 
-let BUBBLE_WIDTH_RATIO  : CGFloat = 0.6
-let BUBBLE_HEIGHT_RATIO : CGFloat = 0.4
-let MIN_BUBBLE_HEIGHT   : CGFloat = 32
-let MAX_BUBBLE_WIDTH    : CGFloat = UIScreen.main.bounds.width * BUBBLE_WIDTH_RATIO
-let MAX_BUBBLE_HEIGHT   : CGFloat = UIScreen.main.bounds.height * BUBBLE_HEIGHT_RATIO
-let SCREEN_WIDTH        : CGFloat = UIScreen.main.bounds.width
-let FONT                : UIFont  = UIFont.systemFont(ofSize: 18)
-let BUBBLE_X_PADDING    : CGFloat = 28
-let BUBBLE_Y_PADDING    : CGFloat = 8
-let BUBBLE_SENDER_SPACE : CGFloat = 40
+let BUBBLE_WIDTH_RATIO      : CGFloat = 0.6
+let BUBBLE_HEIGHT_RATIO     : CGFloat = 0.4
+let MIN_BUBBLE_HEIGHT       : CGFloat = 32
+let MAX_BUBBLE_WIDTH        : CGFloat = UIScreen.main.bounds.width * BUBBLE_WIDTH_RATIO
+let MAX_BUBBLE_HEIGHT       : CGFloat = UIScreen.main.bounds.height * BUBBLE_HEIGHT_RATIO
+let SCREEN_WIDTH            : CGFloat = UIScreen.main.bounds.width
+let FONT                    : UIFont  = UIFont.systemFont(ofSize: 18)
+let BUBBLE_X_PADDING        : CGFloat = 28
+let BUBBLE_Y_PADDING        : CGFloat = 8
+let BUBBLE_SENDER_SPACE     : CGFloat = 40
+let CHAT_COLOR_SENDER       : CGColor = UIColor.blue.cgColor
+let CHAT_COLOR_RECEPIENT    : CGColor = UIColor.lightGray.cgColor
 
 
-enum ChatType {
+enum ChatDirection {
     case sender, recepient
 }
 
-enum MediaType {
+enum ChatMediaType {
     case text, image
 }

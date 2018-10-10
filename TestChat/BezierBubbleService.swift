@@ -15,7 +15,7 @@ protocol BezierBubbleService {
 
 extension BezierBubbleService where Self : ChatBubble {
     func getBezierPath(width: CGFloat, height: CGFloat) -> UIBezierPath {
-        return (chatType == .sender) ? senderBazierPath(width: width, height: height) : recieverBazierPath(width: width, height: height)
+        return (chatDirection == .sender) ? senderBazierPath(width: width, height: height) : recieverBazierPath(width: width, height: height)
     }
 }
 

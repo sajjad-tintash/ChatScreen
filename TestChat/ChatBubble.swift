@@ -21,8 +21,8 @@ class ChatBubble: UITableViewCell,BezierBubbleService {
     var label           : UILabel? = nil
     var imageContent    : UIImage? = nil
     
-    var chatType    = ChatType.sender
-    var mediaType   = MediaType.text
+    var chatDirection    = ChatDirection.sender
+    var mediaType   = ChatMediaType.text
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -60,10 +60,10 @@ class ChatBubble: UITableViewCell,BezierBubbleService {
         }
     }
 
-    func setup<T>(_ data: T, messageOrigin: ChatType) {
-        chatType                = messageOrigin
-        recieverImage.isHidden  = chatType == .sender
-        senderImage.isHidden    = chatType == .recepient
+    func setup<T>(_ data: T, messageOrigin: ChatDirection) {
+        chatDirection                = messageOrigin
+        recieverImage.isHidden  = chatDirection == .sender
+        senderImage.isHidden    = chatDirection == .recepient
         if let text = data as? String {
             dataText    = text
             mediaType   = .text
@@ -163,12 +163,12 @@ extension ChatBubble {
         shapeLayer.path = path.cgPath
         switch mediaType {
         case .text:
-            shapeLayer.frame = chatType == .sender ? CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE, y:0,
+            shapeLayer.frame = chatDirection == .sender ? CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE, y:0,
                                                             width: width,
                                                             height: height) : CGRect(x: BUBBLE_SENDER_SPACE, y:2,
                                                                                      width: width,
                                                                                      height: height)
-            shapeLayer.fillColor = chatType == .sender ? UIColor.green.cgColor : UIColor.lightGray.cgColor
+            shapeLayer.fillColor = chatDirection == .sender ? CHAT_COLOR_SENDER : CHAT_COLOR_SENDER
         case .image:
             shapeLayer.frame = CGRect(x: 0,y:0, width: width, height: height)
         }
@@ -177,7 +177,7 @@ extension ChatBubble {
     
     func getBubbleImageView(_ image: UIImage, width: CGFloat, height: CGFloat) -> UIImageView {
         let bubbleImageView             = UIImageView(image: image)
-        bubbleImageView.frame           = CGRect(x: (chatType == .sender ? SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE : BUBBLE_SENDER_SPACE), y:                0, width: width, height: height)
+        bubbleImageView.frame           = CGRect(x: (chatDirection == .sender ? SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE : BUBBLE_SENDER_SPACE), y:                0, width: width, height: height)
         bubbleImageView.contentMode     = .scaleAspectFill
         bubbleImageView.clipsToBounds   = true
         return bubbleImageView
@@ -188,9 +188,9 @@ extension ChatBubble {
         label.numberOfLines = 0
         label.font          = FONT
         label.textColor     = .white
-        label.textAlignment = chatType == .sender ? .right : .left
+        label.textAlignment = chatDirection == .sender ? .right : .left
         label.text          = text
-        label.frame = CGRect(x: chatType == .sender ? (SCREEN_WIDTH - (width + BUBBLE_X_PADDING/2) - BUBBLE_SENDER_SPACE) : (BUBBLE_SENDER_SPACE +    BUBBLE_X_PADDING / 2),y:2,
+        label.frame = CGRect(x: chatDirection == .sender ? (SCREEN_WIDTH - (width + BUBBLE_X_PADDING/2) - BUBBLE_SENDER_SPACE) : (BUBBLE_SENDER_SPACE +    BUBBLE_X_PADDING / 2),y:2,
                              width: width,
                              height: height)
         return label
