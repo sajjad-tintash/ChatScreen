@@ -7,9 +7,11 @@
 //
 
 import UIKit
-let BUBBLE_SCREEN_RATIO : CGFloat = 0.6
+let BUBBLE_WIDTH_RATIO  : CGFloat = 0.6
+let BUBBLE_HEIGHT_RATIO : CGFloat = 0.4
 let MIN_BUBBLE_HEIGHT   : CGFloat = 32
-let MAX_BUBBLE_WIDTH    : CGFloat = UIScreen.main.bounds.width * BUBBLE_SCREEN_RATIO
+let MAX_BUBBLE_WIDTH    : CGFloat = UIScreen.main.bounds.width * BUBBLE_WIDTH_RATIO
+let MAX_BUBBLE_HEIGHT   : CGFloat = UIScreen.main.bounds.height * BUBBLE_HEIGHT_RATIO
 let SCREEN_WIDTH        : CGFloat = UIScreen.main.bounds.width
 let BUBBLE_X_PADDING    : CGFloat = 28
 let BUBBLE_Y_PADDING    : CGFloat = 8
@@ -90,6 +92,7 @@ class ChatBubble: UITableViewCell {
         showBubble()
     }
     
+    
     func showBubble() {
         var height: CGFloat
         var width: CGFloat
@@ -97,8 +100,18 @@ class ChatBubble: UITableViewCell {
         switch mediaType {
         case .image:
             guard let image = imageContent else { return }
-            width = SCREEN_WIDTH / 2
-            height = width / 0.75
+            let aspectRatio = image.size.width / image.size.height
+            if image.size.width < MAX_BUBBLE_WIDTH {
+                width = image.size.width
+                height = image.size.height
+            } else  {
+                width = MAX_BUBBLE_WIDTH
+                height = width / aspectRatio
+                if height > MAX_BUBBLE_HEIGHT {
+                    height = MAX_BUBBLE_HEIGHT
+                    width = height * aspectRatio
+                }
+            }
             switch chatType {
             case .sender:
                 bezierPath = senderBazierPath(width: width, height: height)
@@ -126,7 +139,7 @@ class ChatBubble: UITableViewCell {
             case .recepient:
                 bezierPath = recieverBazierPath(width: width, height: height)
                 let messageLayer = CAShapeLayer()
-                messageLayer.path = bezierPath.cgPath
+                 messageLayer.path = bezierPath.cgPath
                 messageLayer.frame = CGRect(x: 0,y:0,
                                             width: width,
                                             height: height)
