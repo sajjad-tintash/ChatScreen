@@ -114,8 +114,12 @@ class ChatBubble: UITableViewCell {
                 chatImageView?.layer.mask = messageLayer
                 if let chatImageView = chatImageView {
                     mainView.addSubview(chatImageView)
-                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                    let constraintTop = NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2)
+                    let constraintBottom = NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2)
+                    constraintTop.priority = .defaultHigh
+                    constraintBottom.priority = .defaultHigh
+                    mainView.addConstraint(constraintTop)
+                    mainView.addConstraint(constraintBottom)
                 }
              
 
@@ -134,8 +138,12 @@ class ChatBubble: UITableViewCell {
                 
                 if let chatImageView = chatImageView {
                     mainView.addSubview(chatImageView)
-                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                    let constraintTop = NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2)
+                    let constraintBottom = NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2)
+                    constraintTop.priority = .defaultHigh
+                    constraintBottom.priority = .defaultHigh
+                    mainView.addConstraint(constraintTop)
+                    mainView.addConstraint(constraintBottom)
                 }
             }
             
@@ -174,8 +182,12 @@ class ChatBubble: UITableViewCell {
                 }
                 if let textlabel = label {
                     mainView.addSubview(textlabel)
-                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                    let constraintTop = NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2)
+                    constraintTop.priority = .defaultHigh
+                    let constraintBottom = NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2)
+                    constraintBottom.priority = .defaultHigh
+                    mainView.addConstraint(constraintTop)
+                    mainView.addConstraint(constraintBottom)
                 }
             case .recepient:
                 label?.textColor = .black
@@ -198,8 +210,12 @@ class ChatBubble: UITableViewCell {
                 }
                 if let textlabel = label {
                     mainView.addSubview(textlabel)
-                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                    mainView.addConstraint(NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                    let constraintTop = NSLayoutConstraint(item: textlabel, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2)
+                    constraintTop.priority = .defaultHigh
+                    let constraintBottom = NSLayoutConstraint(item: textlabel, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2)
+                    constraintBottom.priority = .defaultHigh
+                    mainView.addConstraint(constraintTop)
+                    mainView.addConstraint(constraintBottom)
                 }
             }
         }
