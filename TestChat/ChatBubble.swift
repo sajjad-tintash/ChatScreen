@@ -104,6 +104,7 @@ class ChatBubble: UITableViewCell {
         showBubble()
     }
     
+    
     func showBubble() {
         var height: CGFloat
         var width: CGFloat
@@ -112,8 +113,14 @@ class ChatBubble: UITableViewCell {
         case .image:
             var imageView: UIImageView
             guard let image = imageContent else { return }
-            width = SCREEN_WIDTH / 2
-            height = width / 0.75
+            let aspectRatio = image.size.width / image.size.height
+            if image.size.width < MAX_BUBBLE_WIDTH {
+                width = image.size.width
+                height = image.size.height
+            } else  {
+                width = MAX_BUBBLE_WIDTH
+                height = width / aspectRatio
+            }
             switch chatType {
             case .sender:
                 bezierPath = senderBazierPath(width: width, height: height)
@@ -134,7 +141,7 @@ class ChatBubble: UITableViewCell {
             case .recepient:
                 bezierPath = recieverBazierPath(width: width, height: height)
                 let messageLayer = CAShapeLayer()
-                messageLayer.path = bezierPath.cgPath
+                 messageLayer.path = bezierPath.cgPath
                 messageLayer.frame = CGRect(x: 0,y:0,
                                             width: width,
                                             height: height)

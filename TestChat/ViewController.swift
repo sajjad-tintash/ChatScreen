@@ -58,15 +58,17 @@ extension ViewController: UITableViewDataSource {
             return cell
         }
         if indexPath.row % 2 == 0 {
-            cell.setup(dataSource[indexPath.row], isOutgoingMessage: true)
-        } else if indexPath.row == 1 {
+           //cell.setup(dataSource[indexPath.row], isOutgoingMessage: true)
             cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: true)
+        } else if indexPath.row == 1 {
+            cell.setup(UIImage(named: "potrait") ?? UIImage(), isOutgoingMessage: true)
         }
         else if indexPath.row == 3 {
-            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: false)
+            cell.setup(UIImage(named: "potrait") ?? UIImage(), isOutgoingMessage: false)
         }
         else {
-            cell.setup(dataSource[indexPath.row], isOutgoingMessage: false)
+            //cell.setup(dataSource[indexPath.row], isOutgoingMessage: false)
+            cell.setup(UIImage(named: "gameBackground") ?? UIImage(), isOutgoingMessage: true)
         }
         return cell
     }
