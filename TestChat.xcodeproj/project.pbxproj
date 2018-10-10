@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		260A95F9216E065D000B8CDF /* MemoBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260A95F7216E065D000B8CDF /* MemoBubble.swift */; };
+		260A95FA216E065D000B8CDF /* MemoBubble.xib in Resources */ = {isa = PBXBuildFile; fileRef = 260A95F8216E065D000B8CDF /* MemoBubble.xib */; };
 		B40CBD75216C87BA00DEB591 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40CBD74216C87BA00DEB591 /* AppDelegate.swift */; };
 		B40CBD77216C87BA00DEB591 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40CBD76216C87BA00DEB591 /* ViewController.swift */; };
 		B40CBD7A216C87BA00DEB591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40CBD78216C87BA00DEB591 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		260A95F7216E065D000B8CDF /* MemoBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoBubble.swift; sourceTree = "<group>"; };
+		260A95F8216E065D000B8CDF /* MemoBubble.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemoBubble.xib; sourceTree = "<group>"; };
 		B40CBD71216C87B900DEB591 /* TestChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40CBD74216C87BA00DEB591 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B40CBD76216C87BA00DEB591 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 				B40CBD80216C87BC00DEB591 /* Info.plist */,
 				B40CBD86216C8A7D00DEB591 /* ChatBubble.swift */,
 				B40CBD87216C8A7D00DEB591 /* ChatBubble.xib */,
+				260A95F7216E065D000B8CDF /* MemoBubble.swift */,
+				260A95F8216E065D000B8CDF /* MemoBubble.xib */,
 			);
 			path = TestChat;
 			sourceTree = "<group>";
@@ -132,6 +138,7 @@
 				B40CBD7C216C87BB00DEB591 /* Assets.xcassets in Resources */,
 				B40CBD7A216C87BA00DEB591 /* Main.storyboard in Resources */,
 				B40CBD89216C8A7D00DEB591 /* ChatBubble.xib in Resources */,
+				260A95FA216E065D000B8CDF /* MemoBubble.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B40CBD77216C87BA00DEB591 /* ViewController.swift in Sources */,
+				260A95F9216E065D000B8CDF /* MemoBubble.swift in Sources */,
 				B40CBD88216C8A7D00DEB591 /* ChatBubble.swift in Sources */,
 				B40CBD75216C87BA00DEB591 /* AppDelegate.swift in Sources */,
 			);
