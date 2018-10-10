@@ -26,80 +26,66 @@ enum MediaType {
 
 class ChatBubble: UITableViewCell {
 
-    @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var senderImage: UIImageView!
-    @IBOutlet weak var recieverImage: UIImageView!
+    @IBOutlet weak var mainView         : UIView!
+    @IBOutlet weak var senderImage      : UIImageView!
+    @IBOutlet weak var recieverImage    : UIImageView!
     
-    var messageLayer: CAShapeLayer? = nil
+    var messageLayer    : CAShapeLayer?     = nil
+    var chatImageView   : UIImageView?      = nil
 
-    var dataText: String? = nil
-    var label: UILabel? = nil
-    var imageContent: UIImage? = nil
-    var chatType = ChatType.sender
-    var mediaType = MediaType.text
+    var dataText        : String? = nil
+    var label           : UILabel? = nil
+    var imageContent    : UIImage? = nil
+    
+    var chatType    = ChatType.sender
+    var mediaType   = MediaType.text
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         backgroundColor = .clear
         backgroundView = nil
+        
+        senderImage.clipsToBounds        = true
+        senderImage.layer.cornerRadius   = senderImage.frame.width/2
+        recieverImage.clipsToBounds      = true
+        recieverImage.layer.cornerRadius = recieverImage.frame.width/2
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        senderImage.isHidden = false
-        recieverImage.isHidden = false
+        dataText = nil
+        imageContent = nil
         if messageLayer != nil {
             messageLayer?.removeFromSuperlayer()
             messageLayer = nil
-        }
-        if dataText != nil {
-            dataText = nil
         }
         if label != nil {
             label?.removeFromSuperview()
             label = nil
         }
-    }
-    
-    func setup(_ text: String, isOutgoingMessage: Bool) {
-        dataText = text
-        mediaType = .text
-        if isOutgoingMessage {
-            chatType = .sender
-            recieverImage.isHidden = true
-            senderImage.layer.cornerRadius = senderImage.frame.width/2
-            senderImage.clipsToBounds = true
-        } else {
-            chatType = .recepient
-            senderImage.isHidden = true
-            recieverImage.layer.cornerRadius = senderImage.frame.width/2
-            recieverImage.clipsToBounds = true
+        if chatImageView != nil {
+            chatImageView?.removeFromSuperview()
+            chatImageView = nil
         }
-        showBubble()
     }
 
-    func setup(_ image: UIImage, isOutgoingMessage: Bool) {
-        imageContent = image
-        senderImage.layer.cornerRadius = senderImage.frame.width/2
-        senderImage.clipsToBounds = true
-        mediaType = .image
-        if isOutgoingMessage {
-            chatType = .sender
-            recieverImage.isHidden = true
-            senderImage.layer.cornerRadius = senderImage.frame.width/2
-            senderImage.clipsToBounds = true
-        } else {
-            chatType = .recepient
-            senderImage.isHidden = true
-            recieverImage.layer.cornerRadius = senderImage.frame.width/2
-            recieverImage.clipsToBounds = true
+    func setup<T>(_ data: T, messageOrigin: ChatType) {
+        chatType                = messageOrigin
+        recieverImage.isHidden  = chatType == .sender
+        senderImage.isHidden    = chatType == .recepient
+        if let text = data as? String {
+            dataText    = text
+            mediaType   = .text
+        } else if let image = data as? UIImage {
+            imageContent = image
+            mediaType    = .image
         }
         showBubble()
     }
@@ -111,7 +97,6 @@ class ChatBubble: UITableViewCell {
         var bezierPath: UIBezierPath
         switch mediaType {
         case .image:
-            var imageView: UIImageView
             guard let image = imageContent else { return }
             let aspectRatio = image.size.width / image.size.height
             if image.size.width < MAX_BUBBLE_WIDTH {
@@ -129,15 +114,18 @@ class ChatBubble: UITableViewCell {
                 messageLayer.frame = CGRect(x: 0,y:0,
                                             width: width,
                                             height: height)
-                imageView = UIImageView(image: image)
-                imageView.frame = CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
-                imageView.contentMode = .scaleAspectFill
-                imageView.clipsToBounds = true
-                imageView.layer.mask = messageLayer
-                mainView.addSubview(imageView)
+                chatImageView = UIImageView(image: image)
+                chatImageView?.frame = CGRect(x: SCREEN_WIDTH - width - BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
+                chatImageView?.contentMode = .scaleAspectFill
+                chatImageView?.clipsToBounds = true
+                chatImageView?.layer.mask = messageLayer
+                if let chatImageView = chatImageView {
+                    mainView.addSubview(chatImageView)
+                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                }
              
-                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+
             case .recepient:
                 bezierPath = recieverBazierPath(width: width, height: height)
                 let messageLayer = CAShapeLayer()
@@ -145,15 +133,17 @@ class ChatBubble: UITableViewCell {
                 messageLayer.frame = CGRect(x: 0,y:0,
                                             width: width,
                                             height: height)
-                imageView = UIImageView(image: image)
-                imageView.frame = CGRect(x: BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
-                imageView.contentMode = .scaleAspectFill
-                imageView.clipsToBounds = true
-                imageView.layer.mask = messageLayer
-                mainView.addSubview(imageView)
+                chatImageView = UIImageView(image: image)
+                chatImageView?.frame = CGRect(x: BUBBLE_SENDER_SPACE, y: 0, width: width, height: height)
+                chatImageView?.contentMode = .scaleAspectFill
+                chatImageView?.clipsToBounds = true
+                chatImageView?.layer.mask = messageLayer
                 
-                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
-                mainView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                if let chatImageView = chatImageView {
+                    mainView.addSubview(chatImageView)
+                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1, constant: BUBBLE_Y_PADDING/2))
+                    mainView.addConstraint(NSLayoutConstraint(item: chatImageView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1, constant: -BUBBLE_Y_PADDING/2))
+                }
             }
             
         case .text:
